@@ -11,6 +11,20 @@ export class DataService {
     private readonly _errorDataService: ErrorDataService,
   ) {}
 
+  private prepareRequestConfig(
+    config?: Record<string, any>,
+  ): Record<string, any> {
+    const requestConfig: Record<string, any> = {};
+
+    if (config) {
+      requestConfig.headers = {
+        authorization: config.authorization,
+      };
+    }
+
+    return requestConfig;
+  }
+
   get<T>(url: string): Observable<T> {
     return this._httpService.get<T>(url).pipe(
       map((response: AxiosResponse<T>) => response.data),
@@ -20,8 +34,9 @@ export class DataService {
     );
   }
 
-  post<T>(url: string, data: any): Observable<T> {
-    return this._httpService.post<T>(url, data).pipe(
+  post<T>(url: string, data: any, options?: any): Observable<T> {
+    const requestConfig = this.prepareRequestConfig(options?.headers);
+    return this._httpService.post<T>(url, data, requestConfig).pipe(
       map((response: AxiosResponse<T>) => response.data),
       catchError((error: AxiosError) =>
         this._errorDataService.handleError(error),

@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
-import { DataService } from 'src/common/http/data.service';
-import { ErrorDataService } from 'src/common/http/error-data.service';
-import { HttpModule } from '@nestjs/axios';
-
+import { SharedModule } from 'src/shared/shared.module';
 @Module({
-  imports: [HttpModule],
+  imports: [SharedModule],
   controllers: [TasksController],
-  providers: [TasksService, DataService, ErrorDataService],
+  providers: [TasksService],
 })
 export class TasksModule {}

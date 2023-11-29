@@ -10,7 +10,6 @@ export class TasksService {
   private readonly _baseURL = process.env.TASK_MICRO_BASE_URL + '/tasks';
 
   findAll(): Promise<AxiosResponse<any>> {
-    // return this._baseURL as any;
     return firstValueFrom(this._dataService.get(this._baseURL));
   }
 
@@ -20,6 +19,15 @@ export class TasksService {
 
   create(createTaskDto: CreateTaskDto): Promise<AxiosResponse<any>> {
     return firstValueFrom(this._dataService.post(this._baseURL, createTaskDto));
+  }
+
+  update(
+    id: string,
+    createTaskDto: CreateTaskDto,
+  ): Promise<AxiosResponse<any>> {
+    return firstValueFrom(
+      this._dataService.post(this._baseURL + '/' + id, createTaskDto),
+    );
   }
 
   remove(id: string): Promise<AxiosResponse<any>> {
